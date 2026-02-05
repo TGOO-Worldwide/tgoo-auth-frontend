@@ -4,6 +4,7 @@ import { useAuthStore } from '@/store/authStore';
 import { cn, getInitials } from '@/utils/helpers';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import logoSvg from '/logo.svg';
 
 const menuItems = [
   { icon: Home, label: 'Dashboard', path: '/' },
@@ -21,7 +22,7 @@ export default function Sidebar() {
       <div className="p-6 border-b border-border bg-background/30">
         <div className="flex items-center gap-3">
           <img 
-            src="/logo.svg" 
+            src={logoSvg} 
             alt="TGOO Logo" 
             className="h-10 w-auto dark:brightness-110"
           />
