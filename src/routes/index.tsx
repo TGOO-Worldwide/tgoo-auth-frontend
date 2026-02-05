@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import ProtectedRoute from './ProtectedRoute';
-import PublicRoute from './PublicRoute';
 
 // Pages (criar placeholders temporários)
 import Login from '@/pages/Login';

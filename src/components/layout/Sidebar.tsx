@@ -1,10 +1,9 @@
 import { NavLink } from 'react-router-dom';
 import { Home, Building2, Users, Settings, LogOut } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
-import { cn, getInitials, getAvatarColor } from '@/utils/helpers';
+import { cn, getInitials } from '@/utils/helpers';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { APP_NAME } from '@/utils/constants';
 
 const menuItems = [
   { icon: Home, label: 'Dashboard', path: '/' },

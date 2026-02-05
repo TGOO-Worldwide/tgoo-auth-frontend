@@ -21,7 +21,7 @@ import type { UserFilters, User } from '@/types/user.types';
 import ConfirmDialog from '@/components/common/ConfirmDialog';
 
 export default function Users() {
-  const { users, isLoading, createUser, updateUser, deleteUser, resetPassword, refetch, setFilters, clearFilters, filters } = useUsers();
+  const { users, isLoading, createUser, updateUser, deleteUser, resetPassword, refetch, setFilters, clearFilters } = useUsers();
   const { user: currentUser } = useAuth();
   const { platforms } = usePlatforms();
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -48,7 +48,7 @@ export default function Users() {
   });
   
   // Form para editar usuário
-  const { register: registerEdit, handleSubmit: handleSubmitEdit, control: controlEdit, formState: { errors: errorsEdit }, reset: resetEdit, setValue } = useForm<UserUpdateFormData>({
+  const { register: registerEdit, handleSubmit: handleSubmitEdit, control: controlEdit, formState: { errors: errorsEdit }, reset: resetEdit } = useForm<UserUpdateFormData>({
     resolver: zodResolver(userUpdateSchema),
   });
   
@@ -640,10 +640,10 @@ export default function Users() {
         onOpenChange={setDeleteDialogOpen}
         onConfirm={handleDeleteUser}
         title="Excluir Usuário"
-        description={`Tem certeza que deseja excluir o usuário ${selectedUser?.email}? Esta ação não pode ser desfeita.`}
+        message={`Tem certeza que deseja excluir o usuário ${selectedUser?.email}? Esta ação não pode ser desfeita.`}
         confirmText="Excluir"
         cancelText="Cancelar"
-        variant="destructive"
+        variant="danger"
         loading={submitting}
       />
     </div>

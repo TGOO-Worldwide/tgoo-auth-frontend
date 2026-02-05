@@ -10,7 +10,7 @@ import {
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
-import { getInitials, getAvatarColor } from '@/utils/helpers';
+import { getInitials } from '@/utils/helpers';
 import { User, Settings, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ThemeToggle from '@/components/common/ThemeToggle';
