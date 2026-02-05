@@ -1,0 +1,129 @@
+name: Deploy to CloudPanel
+
+on:
+  push:
+    branches:
+      - main
+      - production
+  workflow_dispatch: # Permite executar manualmente
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Build do projeto
+        run: npm run build
+        env:
+          # Adicione suas variáveis de ambiente aqui
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+
+      - name: Criar arquivo de deployment info
+        run: |
+          echo "Build Date: $(date)" > dist/build-info.txt
+          echo "Commit: ${{ github.sha }}" >> dist/build-info.txt
+          echo "Branch: ${{ github.ref_name }}" >> dist/build-info.txt
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            # Navegar para o diretório da aplicação
+            cd ${{ secrets.DEPLOY_PATH }}
+            
+            # Criar backup do deploy anterior
+            if [ -d "current" ]; then
+              echo "Criando backup..."
+              rm -rf backup
+              mv current backup
+            fi
+            
+            # Criar diretório temporário para novos arquivos
+            mkdir -p temp
+            
+            echo "Deploy preparado, aguardando arquivos..."
+
+      - name: Copiar arquivos via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          source: "dist/*"
+          target: "${{ secrets.DEPLOY_PATH }}/temp"
+          strip_components: 1
+
+      - name: Finalizar Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            
+            # Mover arquivos temporários para current
+            rm -rf current
+            mv temp current
+            
+            # Ajustar permissões
+            chmod -R 755 current
+            
+            # Se estiver usando CloudPanel, o diretório geralmente é htdocs
+            # Copiar para o diretório público se necessário
+            if [ -d "htdocs" ]; then
+              echo "Copiando para htdocs..."
+              rm -rf htdocs/*
+              cp -r current/* htdocs/
+              chmod -R 755 htdocs
+            fi
+            
+            echo "✅ Deploy concluído com sucesso!"
+            echo "Build info:"
+            cat current/build-info.txt
+
+      - name: Notificar sucesso
+        if: success()
+        run: |
+          echo "🚀 Deploy realizado com sucesso!"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+
+      - name: Rollback em caso de erro
+        if: failure()
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            if [ -d "backup" ]; then
+              echo "⚠️ Erro detectado! Realizando rollback..."
+              rm -rf current
+              mv backup current
+              if [ -d "htdocs" ]; then
+                rm -rf htdocs/*
+                cp -r current/* htdocs/
+              fi
+              echo "✅ Rollback concluído"
+            fi

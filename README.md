@@ -204,6 +204,56 @@ Para debug e desenvolvimento:
 - `npm run preview` - Preview da build
 - `npm run lint` - Executa ESLint
 
+## 🚀 Deploy
+
+Este projeto está configurado para deploy automático via GitHub Actions para servidores CloudPanel.
+
+### Deploy Automático
+
+O deploy é acionado automaticamente quando você faz push para:
+- Branch `main` → Deploy para Produção
+- Branch `develop/staging` → Deploy para Staging
+
+### Configuração do Deploy
+
+1. **No Servidor CloudPanel:**
+```bash
+# Execute o script de setup
+bash scripts/setup-server.sh
+```
+
+2. **No GitHub:**
+   - Vá para Settings → Secrets and variables → Actions
+   - Adicione os secrets conforme instruções exibidas pelo script
+
+3. **Secrets Necessários:**
+   - `SSH_HOST` - Endereço do servidor
+   - `SSH_USERNAME` - Usuário SSH
+   - `SSH_PRIVATE_KEY` - Chave privada SSH
+   - `DEPLOY_PATH` - Caminho de deploy no servidor
+   - `VITE_API_URL` - URL da API backend
+
+📖 **Guia Completo de Deploy:** [docs/DEPLOY.md](./docs/DEPLOY.md)
+
+### Deploy Manual
+
+Para fazer deploy manual via GitHub Actions:
+1. Vá para a aba **Actions**
+2. Selecione **Deploy to CloudPanel**
+3. Clique em **Run workflow**
+4. Escolha a branch e confirme
+
+### Estrutura de Deploy
+
+```
+servidor/
+└── deployments/
+    └── tgoo-auth-frontend/
+        ├── current/      # Versão ativa
+        ├── backup/       # Backup da versão anterior
+        └── temp/         # Temporário para novos deploys
+```
+
 ## 🤝 Contribuindo
 
 1. Fork o projeto

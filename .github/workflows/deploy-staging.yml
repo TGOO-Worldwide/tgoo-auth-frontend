@@ -1,0 +1,97 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - develop
+      - staging
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Executar testes
+        run: npm run lint
+        continue-on-error: false
+
+      - name: Build do projeto (Staging)
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL_STAGING }}
+          VITE_ENVIRONMENT: staging
+
+      - name: Criar arquivo de deployment info
+        run: |
+          echo "🧪 STAGING BUILD" > dist/build-info.txt
+          echo "Build Date: $(date)" >> dist/build-info.txt
+          echo "Commit: ${{ github.sha }}" >> dist/build-info.txt
+          echo "Branch: ${{ github.ref_name }}" >> dist/build-info.txt
+          echo "Environment: STAGING" >> dist/build-info.txt
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST_STAGING }}
+          username: ${{ secrets.SSH_USERNAME_STAGING }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH_STAGING }}
+            if [ -d "current" ]; then
+              rm -rf backup
+              mv current backup
+            fi
+            mkdir -p temp
+
+      - name: Copiar arquivos via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST_STAGING }}
+          username: ${{ secrets.SSH_USERNAME_STAGING }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          source: "dist/*"
+          target: "${{ secrets.DEPLOY_PATH_STAGING }}/temp"
+          strip_components: 1
+
+      - name: Finalizar Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST_STAGING }}
+          username: ${{ secrets.SSH_USERNAME_STAGING }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH_STAGING }}
+            rm -rf current
+            mv temp current
+            chmod -R 755 current
+            if [ -d "htdocs" ]; then
+              rm -rf htdocs/*
+              cp -r current/* htdocs/
+              chmod -R 755 htdocs
+            fi
+            echo "✅ Deploy de STAGING concluído!"
+            cat current/build-info.txt
+
+      - name: Notificar sucesso
+        if: success()
+        run: |
+          echo "🧪 Deploy de STAGING realizado com sucesso!"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Acesse: ${{ secrets.STAGING_URL }}"
