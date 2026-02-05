@@ -15,6 +15,7 @@ export function useUsers(initialFilters?: UserFilters) {
     createUser,
     updateUser,
     deleteUser,
+    resetPassword,
     setFilters,
     clearFilters,
   } = useUserStore();
@@ -38,6 +39,7 @@ export function useUsers(initialFilters?: UserFilters) {
     createUser,
     updateUser,
     deleteUser,
+    resetPassword,
     setFilters,
     clearFilters,
   };

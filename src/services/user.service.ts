@@ -33,8 +33,8 @@ const userService = {
     return data;
   },
   
-  // Resetar senha do usuário
-  async resetPassword(id: number, newPassword: string): Promise<{ message: string; newPassword: string }> {
+  // Resetar senha do usuário (admin fornece nova senha)
+  async resetPassword(id: number, newPassword: string): Promise<{ message: string }> {
     const { data } = await api.post(`/admin/users/${id}/reset-password`, { newPassword });
     return data;
   },

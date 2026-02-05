@@ -16,6 +16,7 @@ interface UserState {
   createUser: (data: CreateUserDto) => Promise<User>;
   updateUser: (id: number, data: UpdateUserDto) => Promise<User>;
   deleteUser: (id: number) => Promise<void>;
+  resetPassword: (id: number, newPassword: string) => Promise<{ message: string }>;
   setFilters: (filters: UserFilters) => void;
   clearFilters: () => void;
   clearError: () => void;
@@ -86,6 +87,18 @@ export const useUserStore = create<UserState>((set, get) => ({
         total: state.total - 1,
         isLoading: false,
       }));
+    } catch (error: any) {
+      set({ error: error.message, isLoading: false });
+      throw error;
+    }
+  },
+  
+  resetPassword: async (id, newPassword) => {
+    set({ isLoading: true, error: null });
+    try {
+      const result = await userService.resetPassword(id, newPassword);
+      set({ isLoading: false });
+      return result;
     } catch (error: any) {
       set({ error: error.message, isLoading: false });
       throw error;
