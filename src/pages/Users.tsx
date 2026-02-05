@@ -217,8 +217,8 @@ export default function Users() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Usuários</h1>
-          <p className="text-gray-600 mt-1">Gerencie todos os usuários do sistema</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Usuários</h1>
+          <p className="text-muted-foreground mt-1 font-medium">Gerencie todos os usuários do sistema</p>
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="w-4 h-4 mr-2" />
@@ -227,13 +227,13 @@ export default function Users() {
       </div>
       
       {/* Seção de Filtros */}
-      <div className="bg-white rounded-lg border p-4 space-y-4">
+      <div className="bg-card/80 backdrop-blur-sm rounded-xl border-2 p-4 space-y-4 shadow-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Filter className="w-5 h-5 text-gray-500" />
-            <h2 className="font-semibold text-gray-900">Filtros</h2>
+            <Filter className="w-5 h-5 text-primary" />
+            <h2 className="font-bold text-foreground">Filtros</h2>
             {hasActiveFilters && (
-              <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">
+              <span className="bg-primary/20 text-primary border-2 border-primary/30 text-xs font-bold px-2.5 py-1 rounded-full">
                 Ativos
               </span>
             )}
@@ -259,11 +259,11 @@ export default function Users() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
             {/* Busca */}
             <div>
-              <Label htmlFor="search" className="text-sm font-medium text-gray-700">
+              <Label htmlFor="search" className="text-sm font-semibold">
                 Buscar
               </Label>
               <div className="relative mt-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   id="search"
                   placeholder="Email ou nome..."
@@ -276,7 +276,7 @@ export default function Users() {
             
             {/* Filtro de Plataforma */}
             <div>
-              <Label htmlFor="platform-filter" className="text-sm font-medium text-gray-700">
+              <Label htmlFor="platform-filter" className="text-sm font-semibold">
                 Plataforma
               </Label>
               <Select value={platformFilter} onValueChange={setPlatformFilter}>
@@ -296,7 +296,7 @@ export default function Users() {
             
             {/* Filtro de Role */}
             <div>
-              <Label htmlFor="role-filter" className="text-sm font-medium text-gray-700">
+              <Label htmlFor="role-filter" className="text-sm font-semibold">
                 Permissão
               </Label>
               <Select value={roleFilter} onValueChange={setRoleFilter}>
@@ -314,7 +314,7 @@ export default function Users() {
             
             {/* Filtro de Status */}
             <div>
-              <Label htmlFor="status-filter" className="text-sm font-medium text-gray-700">
+              <Label htmlFor="status-filter" className="text-sm font-semibold">
                 Status
               </Label>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -334,20 +334,20 @@ export default function Users() {
       </div>
       
       {/* Tabela de Usuários */}
-      <div className="bg-white rounded-lg border">
+      <div className="bg-card/80 backdrop-blur-sm rounded-xl border-2 shadow-lg overflow-hidden">
         {isLoading && users.length > 0 ? (
           <div className="flex items-center justify-center py-8">
             <LoadingSpinner />
           </div>
         ) : users.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 px-4">
-            <div className="text-gray-400 mb-4">
+            <div className="text-muted-foreground mb-4">
               <Search className="w-16 h-16" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-bold text-foreground mb-2">
               Nenhum usuário encontrado
             </h3>
-            <p className="text-gray-500 text-center max-w-md">
+            <p className="text-muted-foreground text-center max-w-md">
               {hasActiveFilters
                 ? 'Não encontramos usuários com os filtros aplicados. Tente ajustar os critérios de busca.'
                 : 'Ainda não há usuários cadastrados no sistema. Clique em "Novo Usuário" para adicionar o primeiro.'}

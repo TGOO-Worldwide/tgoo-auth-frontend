@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getFriendlyError } from '@/utils/helpers';
 import { APP_NAME } from '@/utils/constants';
+import ThemeToggle from '@/components/common/ThemeToggle';
 
 export default function Login() {
   console.log('Login page rendering');
@@ -41,18 +42,36 @@ export default function Login() {
   };
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold">{APP_NAME}</CardTitle>
-          <CardDescription>
-            Plataforma Master de Autenticação
-          </CardDescription>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-tgoo-bg-light via-background to-accent p-4 relative">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-tgoo-orange/10 via-transparent to-tgoo-purple/10" />
+      
+      {/* Theme Toggle */}
+      <div className="absolute top-4 right-4 z-20">
+        <ThemeToggle variant="outline" className="shadow-lg" />
+      </div>
+      
+      <Card className="w-full max-w-md shadow-2xl border-2 relative z-10 bg-card/95 backdrop-blur-xl">
+        <CardHeader className="space-y-6 text-center pb-8">
+          <div className="flex justify-center">
+            <img 
+              src="/logo.svg" 
+              alt="TGOO Logo" 
+              className="h-12 w-auto dark:brightness-110"
+            />
+          </div>
+          <div>
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              {APP_NAME}
+            </CardTitle>
+            <CardDescription className="text-base mt-2">
+              Plataforma Master de Autenticação
+            </CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-sm font-semibold">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -60,14 +79,15 @@ export default function Login() {
                 {...register('email')}
                 disabled={isLoading}
                 autoComplete="email"
+                className="h-11"
               />
               {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
+                <p className="text-sm text-destructive">{errors.email.message}</p>
               )}
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
+              <Label htmlFor="password" className="text-sm font-semibold">Senha</Label>
               <Input
                 id="password"
                 type="password"
@@ -75,25 +95,28 @@ export default function Login() {
                 {...register('password')}
                 disabled={isLoading}
                 autoComplete="current-password"
+                className="h-11"
               />
               {errors.password && (
-                <p className="text-sm text-red-500">{errors.password.message}</p>
+                <p className="text-sm text-destructive">{errors.password.message}</p>
               )}
             </div>
             
             <Button 
               type="submit" 
-              className="w-full"
+              className="w-full h-11 font-semibold text-base shadow-lg hover:shadow-xl transition-all"
               disabled={isLoading}
             >
               {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>
           
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Acesso restrito a <strong>SUPER_ADMIN</strong>
-            </p>
+          <div className="mt-8 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/50 border border-secondary/20">
+              <span className="text-sm text-muted-foreground">
+                Acesso restrito a <strong className="text-secondary font-bold">SUPER_ADMIN</strong>
+              </span>
+            </div>
           </div>
         </CardContent>
       </Card>

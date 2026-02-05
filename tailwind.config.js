@@ -48,6 +48,12 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        tgoo: {
+          orange: "hsl(var(--tgoo-orange))",
+          purple: "hsl(var(--tgoo-purple))",
+          beige: "hsl(var(--tgoo-beige))",
+          'bg-light': "hsl(var(--tgoo-bg-light))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

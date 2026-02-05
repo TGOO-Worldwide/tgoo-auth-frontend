@@ -5,64 +5,82 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 20 8% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 20 8% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 20 8% 15%;
 
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
+    /* Laranja do logo como cor primária */
+    --primary: 13 73% 51%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Roxo do logo como cor secundária */
+    --secondary: 317 60% 34%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Bege do logo como cor muted */
+    --muted: 30 15% 74%;
+    --muted-foreground: 20 8% 35%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Roxo claro para accent */
+    --accent: 317 30% 92%;
+    --accent-foreground: 317 60% 34%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --border: 30 15% 88%;
+    --input: 30 15% 88%;
+    --ring: 13 73% 51%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+    
+    /* Cores customizadas do logo */
+    --tgoo-orange: 13 73% 51%;
+    --tgoo-purple: 317 60% 34%;
+    --tgoo-beige: 30 15% 74%;
+    --tgoo-bg-light: 30 30% 98%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 20 15% 7%;
+    --foreground: 30 15% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 20 15% 10%;
+    --card-foreground: 30 15% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 20 15% 10%;
+    --popover-foreground: 30 15% 95%;
 
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Laranja mais brilhante para dark mode */
+    --primary: 13 73% 58%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    /* Roxo mais brilhante para dark mode */
+    --secondary: 317 60% 50%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 30 15% 25%;
+    --muted-foreground: 30 15% 60%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 317 40% 15%;
+    --accent-foreground: 317 60% 80%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --border: 30 15% 20%;
+    --input: 30 15% 20%;
+    --ring: 13 73% 58%;
+    
+    /* Cores TGOO ajustadas para dark mode */
+    --tgoo-orange: 13 73% 60%;
+    --tgoo-purple: 317 60% 55%;
+    --tgoo-beige: 30 20% 50%;
+    --tgoo-bg-light: 20 15% 12%;
   }
 }
 
@@ -72,5 +90,66 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "kern" 1, "liga" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Animações suaves para elementos interativos */
+  a, button {
+    @apply transition-colors duration-200;
+  }
+  
+  /* Scroll suave */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Remover aparência de foco padrão, mas manter acessibilidade */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+  
+  /* Melhor seleção de texto */
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Gradientes customizados */
+  .gradient-primary {
+    @apply bg-gradient-to-r from-primary to-primary/80;
+  }
+  
+  .gradient-secondary {
+    @apply bg-gradient-to-r from-secondary to-secondary/80;
+  }
+  
+  .gradient-brand {
+    @apply bg-gradient-to-r from-primary via-secondary to-primary;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+  
+  /* Sombras customizadas */
+  .shadow-brand {
+    box-shadow: 0 4px 20px -2px hsl(var(--tgoo-orange) / 0.2);
+  }
+  
+  .shadow-brand-lg {
+    box-shadow: 0 10px 40px -5px hsl(var(--tgoo-orange) / 0.3);
+  }
+  
+  /* Dark mode específico */
+  .dark .shadow-brand {
+    box-shadow: 0 4px 20px -2px hsl(var(--tgoo-orange) / 0.4);
+  }
+  
+  .dark .shadow-brand-lg {
+    box-shadow: 0 10px 40px -5px hsl(var(--tgoo-orange) / 0.5);
   }
 }

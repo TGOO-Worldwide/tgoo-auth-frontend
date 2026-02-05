@@ -4,7 +4,7 @@ import Header from './Header';
 
 export default function MainLayout() {
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gradient-to-br from-tgoo-bg-light via-background to-accent/20">
       {/* Sidebar */}
       <Sidebar />
       

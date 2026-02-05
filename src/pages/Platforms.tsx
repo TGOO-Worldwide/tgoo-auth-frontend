@@ -68,8 +68,8 @@ export default function Platforms() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Plataformas</h1>
-          <p className="text-gray-600 mt-1">Gerencie todas as plataformas do ecossistema TGOO</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Plataformas</h1>
+          <p className="text-muted-foreground mt-1 font-medium">Gerencie todas as plataformas do ecossistema TGOO</p>
         </div>
         <Button onClick={openCreateDialog}>
           <Plus className="w-4 h-4 mr-2" />
@@ -79,23 +79,25 @@ export default function Platforms() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {platforms.map((platform) => (
-          <Card key={platform.id} className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => openEditDialog(platform)}>
+          <Card key={platform.id} className="cursor-pointer hover:shadow-xl transition-all duration-200 hover:scale-[1.02] bg-card/80 backdrop-blur-sm" onClick={() => openEditDialog(platform)}>
             <CardHeader>
               <div className="flex items-start justify-between">
-                <CardTitle>{platform.name}</CardTitle>
-                <span className={`px-2 py-1 text-xs rounded-full ${
-                  platform.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                <CardTitle className="text-foreground">{platform.name}</CardTitle>
+                <span className={`px-3 py-1 text-xs font-bold rounded-full border-2 ${
+                  platform.isActive 
+                    ? 'bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800' 
+                    : 'bg-muted text-muted-foreground border-border'
                 }`}>
                   {platform.isActive ? 'Ativa' : 'Inativa'}
                 </span>
               </div>
-              <CardDescription>{platform.code}</CardDescription>
+              <CardDescription className="font-mono text-primary">{platform.code}</CardDescription>
             </CardHeader>
             <CardContent>
               {platform.domain && (
-                <p className="text-sm text-gray-600 mb-2">{platform.domain}</p>
+                <p className="text-sm text-muted-foreground mb-2 font-medium">{platform.domain}</p>
               )}
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground font-semibold">
                 {platform._count?.users || 0} usuários
               </p>
             </CardContent>

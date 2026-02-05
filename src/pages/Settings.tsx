@@ -34,14 +34,14 @@ export default function Settings() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Configurações</h1>
-        <p className="text-gray-600 mt-1">Gerencie suas preferências e segurança</p>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Configurações</h1>
+        <p className="text-muted-foreground mt-1 font-medium">Gerencie suas preferências e segurança</p>
       </div>
       
       {/* Perfil */}
-      <Card>
+      <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
         <CardHeader>
-          <CardTitle>Perfil</CardTitle>
+          <CardTitle className="text-foreground">Perfil</CardTitle>
           <CardDescription>Informações da sua conta</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -65,9 +65,9 @@ export default function Settings() {
       </Card>
       
       {/* Alterar Senha */}
-      <Card>
+      <Card className="bg-card/80 backdrop-blur-sm shadow-lg">
         <CardHeader>
-          <CardTitle>Alterar Senha</CardTitle>
+          <CardTitle className="text-foreground">Alterar Senha</CardTitle>
           <CardDescription>Atualize sua senha de acesso</CardDescription>
         </CardHeader>
         <CardContent>

@@ -19,14 +19,19 @@ export default function LoadingSpinner({
   };
   
   const spinner = (
-    <Loader2 
-      className={cn('animate-spin text-primary', sizeClasses[size], className)} 
-    />
+    <div className="relative">
+      <Loader2 
+        className={cn('animate-spin text-primary drop-shadow-lg', sizeClasses[size], className)} 
+      />
+      <Loader2 
+        className={cn('animate-spin text-secondary absolute inset-0 blur-sm opacity-50', sizeClasses[size], className)} 
+      />
+    </div>
   );
   
   if (fullScreen) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-tgoo-bg-light via-white to-accent/20">
         {spinner}
       </div>
     );

@@ -1,6 +1,36 @@
 # TGOO Auth Master - Frontend
 
+<div align="center">
+  <img src="./logo.svg" alt="TGOO Logo" width="200"/>
+</div>
+
 Plataforma Master de Autenticação do ecossistema TGOO. Interface administrativa para gerenciar todas as plataformas e usuários do sistema de autenticação centralizado.
+
+## 🎨 Design System
+
+Esta aplicação segue um sistema de design consistente baseado nas cores da marca TGOO:
+
+- **🟠 Laranja TGOO (#dc5528)**: Cor primária usada em botões principais, links e destaques
+- **🟣 Roxo TGOO (#982173)**: Cor secundária para elementos de apoio e badges
+- **🟤 Bege TGOO (#beb7af)**: Cor neutra para backgrounds sutis e estados muted
+
+### 🌓 Dark Mode
+
+A aplicação possui suporte completo a Dark Mode:
+
+- **Toggle automático**: Botão no Header e na página de Login
+- **Persistência**: Preferência salva automaticamente
+- **Sistema**: Respeita `prefers-color-scheme` do navegador
+- **Otimizado**: Cores ajustadas para melhor contraste no modo escuro
+
+```tsx
+// Usar o tema programaticamente
+import { useTheme } from '@/hooks/useTheme';
+
+const { theme, toggleTheme } = useTheme();
+```
+
+Para mais detalhes sobre o sistema de design, consulte [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md).
 
 ## 🚀 Tecnologias
 
